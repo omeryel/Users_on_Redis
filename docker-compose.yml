@@ -1,0 +1,46 @@
+version: '3'
+services:
+    redis:
+        image: redis:latest
+        ports:
+            - 6379:6379
+        volumes:
+            - "./config:/data"
+        command: >
+            bash -c "chmod 666 /data/redis.conf &&
+            redis-server /data/redis.conf "
+        stdin_open:
+            true
+        tty:
+            true
+    python:
+        build:
+            context: ./python              
+        ports:
+            - 50051:50051     
+        command: ["python","server.py"]   
+        depends_on:
+            - redis  
+        stdin_open:
+            true
+        tty:
+            true    
+    golang:
+        build:
+            context: ./golang
+        
+        
+        depends_on:
+            - python
+        network_mode: host
+        
+       
+        volumes:
+            
+            - "./golang:/usr/src/app"
+        stdin_open:
+            true
+        tty:
+            true
+        command: ["go","run","client.go"]
+

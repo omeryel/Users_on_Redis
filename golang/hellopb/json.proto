@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package hello;
+option go_package = "./hellopb;hellopb";
+
+message jsonRequest {
+    string ID = 1;
+    string Name = 2;
+    string Surname = 3;
+    string Email = 4;
+    string Gender = 5;
+    string IpAddress = 6;
+    string Country = 7;
+    string Username = 8;
+    string Agent = 9;
+    
+}
+
+message jsonResponse {
+    string message = 1;
+}
+
+service jsonService {
+    rpc JsonFunc(jsonRequest) returns (jsonResponse) {};
+}
